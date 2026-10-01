@@ -3,64 +3,70 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   ClipboardList,
-  Users,
   BarChart3,
   Settings,
   ChevronDown,
   ChevronRight,
+  X,
 } from "lucide-react";
 
-// Sidebar navigation structure
-// A parent can have children, while a normal item can have no children.
+type SidebarProps = {
+  sidebarOpen: boolean;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 const navigation = [
   {
     label: "Dashboard",
     to: "/dashboard",
     icon: LayoutDashboard,
   },
+
+  // {
+  //   label: "Staff Information",
+  //   to: "/staff-information",
+  //   icon: LayoutDashboard,
+  // },
+
+    {
+    label: "Staff Information",
+
+    icon: LayoutDashboard,
+    children: [
+      {
+        label: "Create Staff",
+    to: "/staff-information",
+
+      },
+      {
+        label: "Staff List",
+        to: "/staff-list",
+      },
+    ],
+  },
+
   {
     label: "Deliverables",
     icon: ClipboardList,
     children: [
       {
         label: "My Deliverables",
-        to: "/deliverables/my",
-      },
-      {
-        label: "All Deliverables",
-        to: "/deliverables",
+        to: "/my-deliverables",
       },
       {
         label: "Pending Review",
-        to: "/deliverables/pending",
+        to: "/pending-review",
       },
     ],
   },
-  {
-    label: "Staff",
-    icon: Users,
-    children: [
-      {
-        label: "All Staff",
-        to: "/staff",
-      },
-      {
-        label: "Units",
-        to: "/staff/units",
-      },
-    ],
-  },
+
   {
     label: "Reports",
     icon: BarChart3,
     children: [
       {
-        label: "Weekly Reports",
-        to: "/reports/weekly",
-      },
-      {
-        label: "Monthly Reports",
-        to: "/reports/monthly",
+        label: "Review Reports",
+        to: "/reports",
       },
       {
         label: "Performance",
@@ -68,6 +74,7 @@ const navigation = [
       },
     ],
   },
+
   {
     label: "Settings",
     to: "/settings",
@@ -75,96 +82,124 @@ const navigation = [
   },
 ];
 
-function SidebarComponent() {
-  // Stores which parent menu is currently open
+function SidebarComponent({
+  sidebarOpen,
+  setSidebarOpen,
+}: SidebarProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
-  // Opens a menu if closed and closes it if already open
   const handleMenuToggle = (label: string) => {
     setOpenMenu((current) =>
       current === label ? null : label
     );
   };
 
+  const closeMobileSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 border-r border-slate-200 bg-white">
-      
-      {/* Sidebar Header / Logo */}
-      <div className="flex h-16 items-center border-b border-slate-200 px-5">
+    <aside
+      className={`
+        fixed
+        left-0
+        top-0
+        z-50
+        h-screen
+        w-56
+        bg-white
+        border-r
+        border-slate-200
+        transition-transform
+        duration-300
+        ease-in-out
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        md:translate-x-0
+      `}
+    >
+      {/* Sidebar Header */}
+      <div className="flex h-16 items-center justify-between border-b border-slate-100 px-5">
         <div>
-          <h1 className="text-lg font-bold text-slate-900">
+          <h1 className="text-base font-bold text-slate-900">
             SDMS
           </h1>
 
-          <p className="text-xs text-slate-500">
+          <p className="text-[11px] text-slate-500">
             Staff Deliverables
           </p>
         </div>
+
+        {/* Mobile Close Button */}
+        <button
+          type="button"
+          onClick={closeMobileSidebar}
+          className="flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-900 md:hidden"
+          aria-label="Close menu"
+        >
+          <X size={18} />
+        </button>
       </div>
 
-      {/* Main Navigation */}
+      {/* Navigation */}
       <nav className="space-y-1 p-3">
-
         {navigation.map((item) => {
           const Icon = item.icon;
 
-          // Check whether this navigation item has children
           const hasChildren =
             item.children && item.children.length > 0;
 
-          // Check whether this parent menu is currently open
           const isOpen = openMenu === item.label;
 
           return (
             <div key={item.label}>
-
-              {/* Parent navigation item */}
+              {/* Parent With Children */}
               {hasChildren ? (
                 <button
                   type="button"
                   onClick={() => handleMenuToggle(item.label)}
-                  className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
                 >
                   <span className="flex items-center gap-3">
-                    <Icon size={18} />
+                    <Icon size={17} />
 
                     <span>{item.label}</span>
                   </span>
 
-                  {/* Change arrow depending on open/closed state */}
                   {isOpen ? (
-                    <ChevronDown size={16} />
+                    <ChevronDown size={14} />
                   ) : (
-                    <ChevronRight size={16} />
+                    <ChevronRight size={14} />
                   )}
                 </button>
               ) : (
-                /* Normal navigation item without children */
+                /* Normal Link */
                 <NavLink
                   to={item.to!}
+                  onClick={closeMobileSidebar}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                    `flex items-center gap-3 rounded-md px-3 py-2 text-xs font-medium transition ${
                       isActive
-                        ? "bg-slate-900 text-white"
+                        ? "border-l-4 border-blue-900 bg-blue-50/50 text-slate-900"
                         : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     }`
                   }
                 >
-                  <Icon size={18} />
+                  <Icon size={17} />
 
                   <span>{item.label}</span>
                 </NavLink>
               )}
 
-              {/* Child navigation items */}
+              {/* Children */}
               {hasChildren && isOpen && (
-                <div className="ml-9 mt-1 space-y-1 border-l border-slate-200 pl-3">
+                <div className="ml-8 mt-1 space-y-1 border-l border-slate-200 pl-3">
                   {item.children?.map((child) => (
                     <NavLink
                       key={child.to}
                       to={child.to}
+                      onClick={closeMobileSidebar}
                       className={({ isActive }) =>
-                        `block rounded-md px-3 py-2 text-sm transition ${
+                        `block rounded-md px-3 py-1.5 text-xs transition ${
                           isActive
                             ? "font-medium text-slate-900"
                             : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
