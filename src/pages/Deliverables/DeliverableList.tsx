@@ -5,9 +5,7 @@ import {
   FileEdit,
   Send,
   CircleCheck,
-  CalendarDays,
-  User,
-  ClipboardCheck,
+
 } from "lucide-react";
 import { useSubmissionStore } from "../../components/ZustandShare/DeliverablesZuts";
 import { useEffect, useState } from "react";
@@ -88,28 +86,40 @@ function DeliverableList() {
           </span>
         );
       },
-    },
+    },   
+    // {
+    //   field: "comments",
+    //   headerName: "comments",
+    //   flex: 1,
+    // }
   ];
 
   // Convert API data into DataGrid rows
-  const rows = Submissions.flatMap((submission) =>
-    submission.deliverables.map(
-      (deliverable: any, index: number) => ({
-        id: `${submission.user.id}-${index}`,
-        staff: submission.user.name,
-        deliverable: deliverable.title,
-        verificationMethod: deliverable.verificationMethod,
-        dueDate: new Date(
-          deliverable.dueDate
-        ).toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }),
-        status: deliverable.status,
-      })
-    )
-  );
+const rows = Submissions.flatMap((submission) =>
+  submission.deliverables.map(
+    (deliverable: any, index: number) => ({
+      id: `${submission.user.id}-${index}`,
+
+      staff: submission.user.name,
+
+      deliverable: deliverable.title,
+
+      verificationMethod: deliverable.verificationMethod,
+
+      dueDate: new Date(
+        deliverable.dueDate
+      ).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+
+      status: deliverable.status,
+
+      comments: submission.comments || [],
+    })
+  )
+);
 
   return (
     <>

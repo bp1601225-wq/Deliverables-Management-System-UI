@@ -49,7 +49,7 @@ function DataTable({
           },
 
           "& .MuiDataGrid-columnHeader": {
-            backgroundColor: "#5e0095",
+            backgroundColor: "#0706077b",
             color: "#f8fafd",
             fontSize: "10.5px",
             fontWeight: 700,

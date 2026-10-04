@@ -37,3 +37,7 @@ export interface StaffFormData  {
   password: string;
   confirmPassword?: string;
 };
+
+export interface DeliverablesComments {
+  comments: string
+}

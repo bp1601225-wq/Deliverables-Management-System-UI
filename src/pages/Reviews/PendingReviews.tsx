@@ -119,7 +119,7 @@ function PendingReview() {
         onClose={() => setIsStaffModalOpen(false)}
         modalClassName="w-[95vw] max-w-5xl"
       >
-        <PendingModal
+        {/* <PendingModal
           selectedStaff={selectedStaff}
           setSelectedStaff={setSelectedStaff}
           comment={comment}
@@ -128,7 +128,10 @@ function PendingReview() {
             setIsStaffModalOpen(false);
             setSelectedStaff(null);
           }}
-        />
+        /> */}
+
+
+        <PendingModal />
       </ModalOpen>
     </div>
   );
