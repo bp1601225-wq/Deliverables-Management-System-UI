@@ -39,7 +39,7 @@ currentUser: JSON.parse(localStorage.getItem("user") || "null"),
 
       const {token, user} = data
 
-    //   console.log(user, token)
+//   console.log(user, token)
 
      if (success === true) {
   console.log("USER FROM BACKEND:", user);

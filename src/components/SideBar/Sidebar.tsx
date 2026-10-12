@@ -60,26 +60,28 @@ const navigation = [
     ],
   },
 
-  {
-    label: "Reports",
-    icon: BarChart3,
-    children: [
-      {
-        label: "Review Reports",
-        to: "/reports",
-      },
-      {
-        label: "Performance",
-        to: "/reports/performance",
-      },
-    ],
-  },
+  // {
+  //   label: "Reports",
+  //   icon: BarChart3,
+  //   children: [
+  //     {
+  //       label: "Review Reports",
+  //       to: "/reports",
+  //     },
+  //     {
+  //       label: "Performance",
+  //       to: "/reports/performance",
+  //     },
+  //   ],
+  // },
 
   {
     label: "Settings",
     to: "/settings",
     icon: Settings,
-  },
+  }, 
+
+  
 ];
 
 function SidebarComponent({
